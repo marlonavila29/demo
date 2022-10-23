@@ -1,12 +1,33 @@
-package com.studing.demo.domain;
+package domain;
 
+import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Livro {
+@Entity
+public class Livro implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotEmpty(message = "Campo TITULO é requerido")
+    @Length(min =3, max = 50, message = "O campo TITULO ter entre 3 e 100 caracteres")
     private String titulo;
+
+    @NotEmpty(message = "Campo NOME DO AUTOR é requerido")
+    @Length(min =3, max = 100, message = "O campo NOME DO AUTOR deve ter entre 3 e 100 caracteres")
     private String nomeAutor;
+
+    @NotEmpty(message = "Campo TEXTO é requerido")
+    @Length(min =10, max = 2000000, message = "O campo TEXTO deve ter entre 10 e 2000000 caracteres")
     private String texto;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
     public Livro(Integer id, String titulo, String nomeAutor, String texto, Categoria categoria) {
